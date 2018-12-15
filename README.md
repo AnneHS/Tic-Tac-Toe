@@ -14,4 +14,4 @@ src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/won.png" height="
 
 
 
-<img src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/landscape.png" height="20%" width="50%"/> 
+<img src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/landscape.png" height="20%" width="52%"/> 
