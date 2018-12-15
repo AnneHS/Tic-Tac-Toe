@@ -9,5 +9,9 @@ A basic game of tic-tac-toe, where two players take turns pressing buttons in a 
 row horizontally, vertically, or diagonally, that player wins the game.
 
 <img src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/name.png" height="5%" width="20%"/> <img
-src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/won.png" height="5%" width="20%"/> 
-<img src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/landscape.png" height="15%" width="50%"/> 
+src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/won.png" height="5%" width="20%"/>  
+
+
+
+
+<img src="https://github.com/AnneHS/Tic-Tac-Toe/blob/master/app/doc/landscape.png" height="10%" width="5%"/> 
