@@ -1,4 +1,4 @@
-## Tic-Tac-Toe(Android App)
+## Tic-Tac-Toe (Android App)
 
 
 *Anne Hoogerduijn Strating*
