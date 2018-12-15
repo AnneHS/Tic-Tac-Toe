@@ -4,30 +4,33 @@ import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
-    // add variable game
     Game game;
+    TileState state;
 
+    // Initialize game
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // initialize game
         game = new Game();
     }
 
+    // Save instance state
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putSerializable("Game", game);
     }
 
+    // Restore layout (game progress) when activity is reloaded
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -35,49 +38,45 @@ public class MainActivity extends AppCompatActivity {
         if(savedInstanceState != null) {
             game = (Game) savedInstanceState.getSerializable("Game");
 
-            // counter to keep track of restored buttons
-            int counter = 0;
-
-            Button btn;
-
             // Restore Text for each button, one button at a time
+            int counter = 0;
             for(int row=0; row<3; row++)
                 for (int col = 0; col < 3; col++) {
 
                     counter += 1;
 
-                    /* Get corresponding button */
-                    if (counter == 1) {
-                        btn = findViewById(R.id.one);
-                    } else if (counter == 2) {
-                        btn = findViewById(R.id.two);
-                    } else if (counter == 3) {
-                        btn = findViewById(R.id.three);
-                    } else if (counter == 4) {
-                        btn = findViewById(R.id.four);
-                    } else if (counter == 5) {
-                        btn = findViewById(R.id.five);
-                    } else if (counter == 6) {
-                        btn = findViewById(R.id.six);
-                    } else if (counter == 7) {
-                        btn = findViewById(R.id.seven);
-                    } else if (counter == 8) {
-                        btn = findViewById(R.id.eight);
-                    } else { // if r.id.9
-                        btn = findViewById(R.id.nine);
+                    // Get reference to button
+                    Button btn = null;
+                    switch(counter) {
+                        case 1:         btn = findViewById(R.id.one);
+                                        break;
+                        case 2:         btn = findViewById(R.id.two);
+                                        break;
+                        case 3:         btn = findViewById(R.id.three);
+                                        break;
+                        case 4:         btn = findViewById(R.id.four);
+                                        break;
+                        case 5:         btn = findViewById(R.id.five);
+                                        break;
+                        case 6:         btn = findViewById(R.id.six);
+                                        break;
+                        case 7:         btn = findViewById(R.id.seven);
+                                        break;
+                        case 8:         btn = findViewById(R.id.eight);
+                                        break;
+                        case 9:         btn = findViewById(R.id.nine);
+                                        break;
                     }
 
-                    // Get saved Tilestate for current button
+                    // Set text to correspond with saved TileState
                     TileState saved = game.save(row, col);
-
-                    // Restore
                     switch (saved) {
                         case CROSS:     btn.setText("X");
-                                        break;
+                            break;
                         case CIRCLE:    btn.setText("0");
-                                        break;
+                            break;
                         case BLANK:     btn.setText("");
-                                        break;
+                            break;
                     }
                 }
         }
@@ -85,43 +84,32 @@ public class MainActivity extends AppCompatActivity {
 
     public void tileClicked(View view) {
 
-        Button btn;
-        int row;
-        int col;
+        // Get reference to clicked button
+        Button btn = findViewById(view.getId());
 
-        // translate button ID into coordinates
-        int id = view.getId();
-
-        TileState state;
-        if (id == R.id.one) {
-            btn = findViewById(R.id.one); // of met (Button) ????
-            state = game.choose(0, 0);
-        } else if (id == R.id.two) {
-            btn = findViewById(R.id.two);
-            state = game.choose(0, 1);
-        } else if (id == R.id.three) {
-            btn = findViewById(R.id.three);
-            state = game.choose(0, 2);
-        } else if (id == R.id.four) {
-            btn = findViewById(R.id.four);
-            state = game.choose(1, 0);
-        } else if (id == R.id.five) {
-            btn = findViewById(R.id.five);
-            state = game.choose(1, 1);
-        } else if (id == R.id.six) {
-            btn = findViewById(R.id.six);
-            state = game.choose(1, 2);
-        } else if (id == R.id.seven) {
-            btn = findViewById(R.id.seven);
-            state = game.choose(2, 0);
-        } else if (id == R.id.eight) {
-            btn = findViewById(R.id.eight);
-            state = game.choose(2, 1);
-        } else { // if r.id.9
-            btn = findViewById(R.id.nine);
-            state = game.choose(2, 2);
+        // Get corresponding TileState
+        switch(view.getId()) {
+            case R.id.one:          state = game.choose(0, 0);
+                                    break;
+            case R.id.two:          state = game.choose(0, 1);
+                                    break;
+            case R.id.three:        state = game.choose(0, 2);
+                                    break;
+            case R.id.four:         state = game.choose(1, 0);
+                                    break;
+            case R.id.five:         state = game.choose(1, 1);
+                                    break;
+            case R.id.six:          state = game.choose(1, 2);
+                                    break;
+            case R.id.seven:        state = game.choose(2, 0);
+                                    break;
+            case R.id.eight:        state = game.choose(2, 1);
+                                    break;
+            case R.id.nine:         state = game.choose(2, 2);
+                                    break;
         }
 
+        // Set button text
         switch(state) {
             case CROSS:     btn.setText("X");
                             break;
@@ -133,12 +121,20 @@ public class MainActivity extends AppCompatActivity {
 
         GameState game_state = game.won();
 
+        // Display toast when game has ended
+        Toast toast;
         switch(game_state) {
-            case PLAYER_ONE:    Toast.makeText(getApplicationContext(), "P1 won", Toast.LENGTH_SHORT).show();
+            case PLAYER_ONE:    toast = Toast.makeText(getApplicationContext(), "P1 won", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
                                 break;
-            case PLAYER_TWO:    Toast.makeText(getApplicationContext(), "P2 won", Toast.LENGTH_SHORT).show();
+            case PLAYER_TWO:    toast = Toast.makeText(getApplicationContext(), "P2 won", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
                                 break;
-            case DRAW:          Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT).show();
+            case DRAW:          toast = Toast.makeText(getApplicationContext(), "DRAW", Toast.LENGTH_SHORT);
+                                toast.setGravity(Gravity.CENTER, 0, 0);
+                                toast.show();
                                 break;
         }
     }
@@ -149,13 +145,3 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 }
-
-
-
-/*
-Button selected_button = (Button) findViewById(R.id.id);
-For (int row = 0; row < 3; row++) {
-    for (int col = 0; col < 3; col++) {
-        if Grid[row][col] == selectedbutton;
-            TileState state = game.choose(row, col);
-*/

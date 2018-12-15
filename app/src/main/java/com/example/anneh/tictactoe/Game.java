@@ -5,14 +5,14 @@ import android.util.Log;
 
 public class Game implements Serializable {
 
-    // declare constant and variable to hold the board
     final private int BOARD_SIZE = 3;
     private TileState[][] board;
 
+    // To keep track of who's turn it is and whether the game has ended
     private Boolean playerOneTurn;
-    private int movesPlayed;
     private Boolean gameOver;
 
+    // Create a new Game where all TileStates are initialized to BLANK
     public Game() {
         board = new TileState[BOARD_SIZE][BOARD_SIZE];
         for(int i=0; i<BOARD_SIZE; i++) {
@@ -25,6 +25,7 @@ public class Game implements Serializable {
         gameOver = false;
     }
 
+    // Choose new TileState for clicked button based on who's turn it is
     public TileState choose(int row, int column) {
 
         if (board[row][column] == TileState.BLANK && gameOver != true) {
@@ -49,6 +50,8 @@ public class Game implements Serializable {
         return board[row][col];
     }
 
+
+    // Checks whether game has been won and by whom
     public GameState won() {
 
         TileState cross = TileState.CROSS;
